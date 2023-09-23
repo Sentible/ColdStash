@@ -1,17 +1,56 @@
-import { useState } from "react";
+import { useLazyQuery } from "@airstack/airstack-react";
+import { FormEvent, useCallback, useState } from "react";
 
 // @todo
 //  ens name & avatar
 
-export default function Form() {
-  const [formData, setFormData] = useState({});
+const isAddress = (address: string) => address.length === 42;
 
-  const handleChange = (e) => {
+const useAddressResolve = (address: string) => {
+  const [resolveAddress] = useLazyQuery(`
+    query MyQuery {
+      Wallet(
+        input: {identity: "${address}", blockchain: ethereum}
+      ) {
+        addresses
+      }
+    }
+    `
+  );
+
+  const getData = useCallback(async () => {
+    if(isAddress(address)) {
+      return address;
+    } else {
+      const { data } = await resolveAddress();
+      return data?.Wallet?.addresses?.[0] as string;
+    }
+  }, [address, resolveAddress]);
+
+  return { getData };
+}
+
+export default function Form() {
+  const [isSaving, setIsSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    coldWallet: "",
+  });
+
+  const { getData } = useAddressResolve(formData.coldWallet);
+
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = useCallback(async (e?: FormEvent<HTMLFormElement>) => {
+    setIsSaving(true);
+    e?.preventDefault();
+    const address = await getData();
+    console.log(address);
+  }, [getData]);
+
   return (
-    <div className="w-1/2 shadow-md rounded-lg p-8 my-8 bg-gradient-to-r from-cyan-100 to-blue-100">
+    <form onSubmit={handleSubmit} className="w-1/2 shadow-md rounded-lg p-8 my-8 bg-gradient-to-r from-cyan-100 to-blue-100">
       <div className="flex flex-row items-center">
         <h1 className="text-3xl mr-2">Enter Cold wallet</h1>
         <svg
@@ -33,12 +72,12 @@ export default function Form() {
       <input
         className="border-2 rounded-md p-2 my-8 w-full"
         placeholder="Enter ENS, lens, or wallet address"
-        name="cold-wallet"
+        name="coldWallet"
         onChange={handleChange}
       />
-      <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 w-1/5">
+      <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 w-1/5" type='submit'>
         Submit
       </button>
-    </div>
+    </form>
   );
 }
