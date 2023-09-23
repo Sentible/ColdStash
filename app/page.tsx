@@ -7,7 +7,7 @@ import {
   useWeb3ModalTheme,
 } from "@web3modal/wagmi/react";
 import { WagmiConfig } from "wagmi";
-import { arbitrum, mainnet } from "wagmi/chains";
+import { arbitrum, mainnet, base, goerli } from "wagmi/chains";
 
 // @ts-expect-error 1. Get projectId
 if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
@@ -17,7 +17,7 @@ if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
 // 2. Create wagmiConfig
-const chains = [mainnet, arbitrum];
+const chains = [mainnet, arbitrum, base, goerli];
 const wagmiConfig = defaultWagmiConfig({
   chains,
   projectId,
