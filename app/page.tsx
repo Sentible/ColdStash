@@ -1,5 +1,6 @@
 "use client";
 
+import Form from "@/components/form";
 import {
   createWeb3Modal,
   defaultWagmiConfig,
@@ -44,7 +45,10 @@ export default function App() {
 
   return (
     <WagmiConfig config={wagmiConfig}>
-      <w3m-button />
+      <div className="flex flex-col place-items-center p-10">
+        <w3m-button />
+        <Form />
+      </div>
     </WagmiConfig>
   );
 }
