@@ -10,6 +10,8 @@ import { WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, base, goerli } from "wagmi/chains";
 import { AirstackProvider, init } from "@airstack/airstack-react";
 import Form from "@/components/Form";
+import Nav from "@/components/Nav";
+import Profile from "@/components/Profile";
 
 const airstack = process.env.NEXT_PUBLIC_AIRSTACK_API_KEY;
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -17,10 +19,12 @@ const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 if (!projectId) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 } else if (!airstack) {
-  throw new Error("You need to provide NEXT_PUBLIC_AIRSTACK_API_KEY env variable");
+  throw new Error(
+    "You need to provide NEXT_PUBLIC_AIRSTACK_API_KEY env variable"
+  );
 }
 
-init(airstack)
+init(airstack);
 
 // 2. Create wagmiConfig
 const chains = [mainnet, arbitrum, base, goerli];
@@ -37,8 +41,9 @@ createWeb3Modal({
   chains,
   themeMode: "light",
   themeVariables: {
-    "--w3m-color-mix": "#00DCFF",
+    "--w3m-color-mix": "#9333ea",
     "--w3m-color-mix-strength": 20,
+    "--w3m-accent": "black",
   },
 });
 
@@ -48,12 +53,11 @@ export default function App() {
 
   return (
     <AirstackProvider apiKey={airstack!}>
-    <WagmiConfig config={wagmiConfig}>
-      <div className="flex flex-col place-items-center p-10">
-        <w3m-button />
+      <WagmiConfig config={wagmiConfig}>
+        <Nav />
         <Form />
-      </div>
-    </WagmiConfig>
+        <Profile />
+      </WagmiConfig>
     </AirstackProvider>
   );
 }

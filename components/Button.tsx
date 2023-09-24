@@ -5,7 +5,11 @@ type ButtonProps = {
 
 export default function Button({ disabled, text }: ButtonProps) {
   return (
-    <button disabled={disabled} className="bg-black hover:bg-white hover:text-black text-white rounded-full p-4 w-1/5" type='submit'>
+    <button
+      className="bg-black hover:bg-white hover:text-black text-white rounded-full py-4 px-10"
+      type="submit"
+      disabled={disabled}
+    >
       {text}
     </button>
   );
