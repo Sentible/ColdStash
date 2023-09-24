@@ -37,11 +37,10 @@ const wagmiConfig = defaultWagmiConfig({
 
 // 3. Create modal
 createWeb3Modal({
-  defaultChain: goerli,
   wagmiConfig,
   projectId,
   chains,
-  defaultChain: goerli,
+  defaultChain: arbitrum,
   featuredWalletIds: [
     "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
     "c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a",

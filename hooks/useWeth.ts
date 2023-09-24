@@ -3,7 +3,7 @@ import weth from "@/abi/weth";
 import { COLD_STASH_CONTRACTS } from "@/utils";
 import { SWAP_MAP } from "@/utils/config";
 import { useRef, useEffect } from "react";
-import { useAccount, useContractRead, useContractWrite, useNetwork } from "wagmi";
+import { useContractWrite, useNetwork } from "wagmi";
 
 const isNull = (value: any) => value ==='0x0000000000000000000000000000000000000000';
 
@@ -33,6 +33,7 @@ const useInterval = (callback: () => void, delay: number | null, disabled?: any)
 
 export const useWeth = ({ callback }: { callback?: () => void }) => {
   const { chain } = useNetwork();
+
   const { data: writeData,  isLoading, isSuccess, writeAsync } = useContractWrite({
     abi: weth,
     address: chain?.id === 5 ? SWAP_MAP.goerli.WETH : '' as any,

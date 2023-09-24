@@ -59,6 +59,8 @@ const StakeView = ({ onBack }: { onBack: () => void }) => {
     amount: "",
   });
 
+  const [quote, setQuote] = useState<any>(null);
+
   const { balanceInEth, balance } = useEthBalance();
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
@@ -66,10 +68,10 @@ const StakeView = ({ onBack }: { onBack: () => void }) => {
   };
 
   const { getQuote } = use1inch({
-    fromTokenAddress: SWAP_MAP.goerli.WETH,
-    toTokenAddress: SWAP_MAP.goerli.rETH,
-    amount: web3.utils.toWei(formData.amount, "ether"),
-  });
+    fromTokenAddress: SWAP_MAP.arbi.WETH,
+    toTokenAddress: SWAP_MAP.arbi.rETH,
+    amount: web3.utils.toWei(formData.amount, 'ether'),
+  })
 
   const setMax = () => {
     const buffer = Number(balanceInEth) * 0.02;
@@ -90,7 +92,18 @@ const StakeView = ({ onBack }: { onBack: () => void }) => {
           value={formData.amount}
         />
         <Button onClick={setMax} opaque text="Max" />
-        <Button onClick={getQuote} text="Wrap & Stake" />
+        <Button onClick={() => {
+          getQuote().then(setQuote)
+        }} text="Get Quote" />
+
+        <p className="font-mono" style={{
+          overflow: 'scroll',
+          width: '620px',
+        }}>
+        {quote && (
+          JSON.stringify(quote?.data)
+        )}
+        </p>
       </div>
     </div>
   );

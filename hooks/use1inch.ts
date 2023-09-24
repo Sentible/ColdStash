@@ -1,4 +1,5 @@
 import { FusionSDK, NetworkEnum } from "@1inch/fusion-sdk";
+import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 
@@ -9,7 +10,7 @@ type Use1inchParams = {
 };
 
 
-const CHAIN_MAPPINGS = {
+export const CHAIN_MAPPINGS = {
   1: NetworkEnum.ETHEREUM,
   42161: NetworkEnum.ARBITRUM,
   137: NetworkEnum.POLYGON,
@@ -22,30 +23,20 @@ export const use1inch = ({
   toTokenAddress,
   amount,
 }: Use1inchParams) => {
-  const [sdk, setSdk] = useState<FusionSDK | null>(null);
-
-  const { chain } = useNetwork();
 
   const getQuote = useCallback(async () => {
-    if (fromTokenAddress && toTokenAddress && amount && sdk) {
-      const _quote = await  sdk.getQuote({
-        fromTokenAddress,
-        toTokenAddress,
-        amount,
+    if (fromTokenAddress && toTokenAddress && amount) {
+      const _quote = await axios.get('/api', {
+        params: {
+          fromTokenAddress,
+          toTokenAddress,
+          amount,
+        },
       });
       return _quote;
     }
     return null;
-  }, [fromTokenAddress, toTokenAddress, amount, sdk]);
-
-  useEffect(() => {
-    const _sdk = new FusionSDK({
-      url: "https://api.1inch.dev/fusion",
-      network: CHAIN_MAPPINGS[chain?.id || 100],
-      authKey: process.env.NEXT_PUBLIC_1INCH_API_KEY,
-    });
-    setSdk(_sdk);
-  }, [chain]);
+  }, [fromTokenAddress, toTokenAddress, amount]);
 
   return { getQuote };
 };
