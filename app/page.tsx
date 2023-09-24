@@ -12,6 +12,7 @@ import { AirstackProvider, init } from "@airstack/airstack-react";
 import Form from "@/components/Form";
 import Nav from "@/components/Nav";
 import Profile from "@/components/Profile";
+import NounFlowerMarquee from "@/components/NounFlowerMarquee";
 
 const airstack = process.env.NEXT_PUBLIC_AIRSTACK_API_KEY;
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -40,6 +41,12 @@ createWeb3Modal({
   wagmiConfig,
   projectId,
   chains,
+  defaultChain: goerli,
+  featuredWalletIds: [
+    "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
+    "c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a",
+    "1ae92b26df02f0abca6304df07debccd18262fdf5fe82daa81593582dac9a369",
+  ],
   themeMode: "light",
   themeVariables: {
     "--w3m-color-mix": "#9333ea",
@@ -58,6 +65,7 @@ export default function App() {
         <Nav />
         <Form />
         <Profile />
+        <NounFlowerMarquee />
       </WagmiConfig>
     </AirstackProvider>
   );
