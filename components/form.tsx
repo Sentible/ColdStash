@@ -1,42 +1,17 @@
-import { useLazyQuery } from "@airstack/airstack-react";
 import { FormEvent, useCallback, useState } from "react";
-import Avatar from "./Avatar";
+import { useAccount } from "wagmi";
 import Button from "./Button";
 import Input from "./Input";
-import WalletAddress from "./WalletAddress";
-
-const isAddress = (address: string) => address.length === 42;
-
-const useAddressResolve = (address: string) => {
-  const [resolveAddress] = useLazyQuery(`
-    query MyQuery {
-      Wallet(
-        input: {identity: "${address}", blockchain: ethereum}
-      ) {
-        addresses
-      }
-    }
-    `
-  );
-
-  const getData = useCallback(async () => {
-    if(isAddress(address)) {
-      return address;
-    } else {
-      const { data } = await resolveAddress();
-      return data?.Wallet?.addresses?.[0] as string;
-    }
-  }, [address, resolveAddress]);
-
-  return { getData };
-}
+import { useAddressResolve } from "@/hooks/useAddressResolve";
+import { useColdStash } from "@/hooks/useColdStash";
 
 export default function Form() {
-  const [isSaving, setIsSaving] = useState(false);
+  const { address } = useAccount();
   const [formData, setFormData] = useState({
     coldWallet: "",
   });
 
+  const { addColdWallet, coldWalletAddress, isLoading } = useColdStash();
   const { getData } = useAddressResolve(formData.coldWallet);
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
@@ -44,11 +19,22 @@ export default function Form() {
   };
 
   const handleSubmit = useCallback(async (e?: FormEvent<HTMLFormElement>) => {
-    setIsSaving(true);
     e?.preventDefault();
-    const address = await getData();
-    console.log(address);
-  }, [getData]);
+    const addressToSave = await getData();
+    if (addressToSave && !coldWalletAddress) {
+      await addColdWallet({
+        args: [addressToSave],
+      }).then((x) => {
+        console.log(x);
+      }).catch((e) => {
+        console.log(e);
+      })
+    }
+  }, [getData, addColdWallet, coldWalletAddress]);
+
+  if (address && coldWalletAddress) {
+    return null
+  }
 
   return (
     <form onSubmit={handleSubmit} className="w-2/5 flex flex-col place-items-center shadow-md rounded-3xl py-11 px-7 my-8 bg-gradient-to-r from-lime-200 via-yellow-200 to-purple-200">
@@ -58,7 +44,7 @@ export default function Form() {
         handleChange={handleChange}
       />
 
-      <Button text="Submit" />
+      <Button disabled={isLoading} text="Submit" />
     </form>
   );
 }

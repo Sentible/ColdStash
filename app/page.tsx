@@ -1,15 +1,15 @@
 "use client";
 
-import Form from "@/components/Form";
 import {
   createWeb3Modal,
   defaultWagmiConfig,
   useWeb3Modal,
   useWeb3ModalTheme,
 } from "@web3modal/wagmi/react";
-import { WagmiConfig, useAccount, useContractRead} from "wagmi";
+import { WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, base, goerli } from "wagmi/chains";
-import { AirstackProvider, init, useQuery } from "@airstack/airstack-react";
+import { AirstackProvider, init } from "@airstack/airstack-react";
+import Form from "@/components/Form";
 
 const airstack = process.env.NEXT_PUBLIC_AIRSTACK_API_KEY;
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -43,7 +43,6 @@ createWeb3Modal({
 });
 
 export default function App() {
-  // 4. Use modal hook
   const modal = useWeb3Modal();
   const theme = useWeb3ModalTheme();
 
