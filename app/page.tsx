@@ -7,7 +7,7 @@ import {
   useWeb3ModalTheme,
 } from "@web3modal/wagmi/react";
 import { WagmiConfig } from "wagmi";
-import { arbitrum, mainnet, base, goerli } from "wagmi/chains";
+import { arbitrum, mainnet, base, goerli, gnosis } from "wagmi/chains";
 import { AirstackProvider, init } from "@airstack/airstack-react";
 import Form from "@/components/Form";
 import Nav from "@/components/Nav";

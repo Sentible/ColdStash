@@ -74,6 +74,7 @@ export default function Form() {
         {addressToSave && <WalletAddress address={addressToSave} />}
 
         <Input
+          name="coldWallet"
           placeholder="Enter ENS, lens, or wallet address"
           handleChange={handleChange}
         />
