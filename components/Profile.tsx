@@ -11,13 +11,9 @@ import Input from "./Input";
 import { useEthBalance } from "@/hooks/useEthBalance";
 import { SWAP_MAP } from "@/utils/config";
 import web3 from "web3";
+import BackButton from "./BackButton";
 
-const ProfileView = ({
-  onStakeClick,
-}: {
-  onStakeClick: () => void;
-}) => {
-
+const ProfileView = ({ onStakeClick }: { onStakeClick: () => void }) => {
   const { balanceInEth } = useEthBalance();
 
   return (
@@ -55,16 +51,12 @@ const ProfileView = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-const StakeView = ({
-  onBack,
-}: {
-  onBack: () => void;
-}) => {
+const StakeView = ({ onBack }: { onBack: () => void }) => {
   const [formData, setFormData] = useState({
-    amount: '',
+    amount: "",
   });
 
   const { balanceInEth, balance } = useEthBalance();
@@ -73,31 +65,36 @@ const StakeView = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   const { getQuote } = use1inch({
     fromTokenAddress: SWAP_MAP.goerli.WETH,
     toTokenAddress: SWAP_MAP.goerli.rETH,
-    amount: web3.utils.toWei(formData.amount, 'ether'),
-  })
+    amount: web3.utils.toWei(formData.amount, "ether"),
+  });
 
   const setMax = () => {
     const buffer = Number(balanceInEth) * 0.02;
     const max = Number(balanceInEth) - buffer;
     setFormData({ ...formData, amount: max.toString() });
-  }
+  };
 
   return (
     <div>
-      <Button onClick={onBack} text="Back" />
+      <BackButton onClick={onBack} />
       <div>
-        <h3 className="text-lg">{balanceInEth} ETH</h3>
-        <Input type="number" handleChange={handleChange} name="amount" placeholder="Amount to stake in ETH" value={formData.amount} /> 
-        <Button onClick={setMax} text="Max" />
+        <h3 className="text-xl font-semibold pt-2">{balanceInEth} ETH</h3>
+        <Input
+          type="number"
+          handleChange={handleChange}
+          name="amount"
+          placeholder="Amount to stake in ETH"
+          value={formData.amount}
+        />
+        <Button onClick={setMax} opaque text="Max" />
         <Button onClick={getQuote} text="Wrap & Stake" />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default function Profile() {
   const { address } = useAccount();
