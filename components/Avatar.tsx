@@ -21,21 +21,18 @@ export default function Avatar({ address, url }: AvatarProps) {
   }, [address]);
 
   const _url = useMemo(() => {
-    if (!disable) {
-      return url;
-    } else if (!blockieCanvas) {
+    if (!address) {
       return fallbackUrl;
+    } else if (disable && address) {
+      return blockieCanvas?.toDataURL();
     }
-
-    return blockieCanvas.toDataURL();
-  }, [blockieCanvas, disable, url]);
-
-  console.log(url);
+    return url;
+  }, [address, blockieCanvas, disable, url]);
 
   return (
     <img
       className="h-20 w-20 rounded-full ring-4 ring-white mt-8 mb-4"
-      src={_url}
+      src={_url || fallbackUrl}
       // style={{
       //   backgroundImage: `url(${url}) center center / cover no-repeat`,
       // }}
