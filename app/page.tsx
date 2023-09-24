@@ -36,6 +36,7 @@ const wagmiConfig = defaultWagmiConfig({
 
 // 3. Create modal
 createWeb3Modal({
+  defaultChain: goerli,
   wagmiConfig,
   projectId,
   chains,

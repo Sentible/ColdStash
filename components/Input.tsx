@@ -10,6 +10,6 @@ export default function Input({ handleChange, placeholder }: InputProps) {
       placeholder={placeholder}
       name="coldWallet"
       onChange={handleChange}
-    />
+    ></input>
   );
 }

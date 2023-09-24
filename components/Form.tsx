@@ -18,6 +18,7 @@ export default function Form() {
     coldWallet: "",
   });
   const [addressToSave, setAddressToSave] = useState<string | null>(null);
+  const [pendingHash, setPendingHash] = useState<string | null>(null);
 
   const { addColdWallet, coldWalletAddress, isLoading } = useColdStash();
   const { getData } = useAddressResolve(formData.coldWallet);
@@ -43,6 +44,7 @@ export default function Form() {
         })
           .then((x) => {
             console.log(x);
+            setPendingHash(x.hash);
           })
           .catch((e) => {
             console.log(e);
@@ -76,7 +78,20 @@ export default function Form() {
           handleChange={handleChange}
         />
 
+        {pendingHash ? (
+          <p>
+            Pending transaction:{" "}
+            <a
+              href={`https://goerli.etherscan.io/tx/${pendingHash}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {pendingHash}
+            </a>
+          </p>
+        ) : (
         <Button disabled={isLoading} text="Save" />
+        )}
       </Card>
     </form>
   );
