@@ -5,10 +5,9 @@ type WalletAddressProps = {
 };
 
 export default function WalletAddress({ address }: WalletAddressProps) {
-  const fallbackAddress = "0x0101...0101";
   return (
     <h2 className="text-slate-600 text-lg">
-      {fallbackAddress || getShortenName(address)}
+      {getShortenName(address)}
     </h2>
   );
 }
