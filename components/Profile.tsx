@@ -9,6 +9,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { use1inch } from "@/hooks/use1inch";
 import Input from "./Input";
 import { useEthBalance } from "@/hooks/useEthBalance";
+import { SWAP_MAP } from "@/utils/config";
+import web3 from "web3";
 
 const ProfileView = ({
   onStakeClick,
@@ -65,7 +67,7 @@ const StakeView = ({
     amount: '',
   });
 
-  const { balanceInEth } = useEthBalance();
+  const { balanceInEth, balance } = useEthBalance();
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -73,18 +75,25 @@ const StakeView = ({
 
 
   const { getQuote } = use1inch({
-    fromTokenAddress: '',
-    toTokenAddress: '',
-    amount: '',
+    fromTokenAddress: SWAP_MAP.goerli.WETH,
+    toTokenAddress: SWAP_MAP.goerli.rETH,
+    amount: web3.utils.toWei(formData.amount, 'ether'),
   })
+
+  const setMax = () => {
+    const buffer = Number(balanceInEth) * 0.02;
+    const max = Number(balanceInEth) - buffer;
+    setFormData({ ...formData, amount: max.toString() });
+  }
 
   return (
     <div>
       <Button onClick={onBack} text="Back" />
       <div>
         <h3 className="text-lg">{balanceInEth} ETH</h3>
-        <Input type="number" handleChange={handleChange} name="amount" placeholder="Amount to stake in ETH" /> 
-        <Button onClick={onBack} text="Max" />
+        <Input type="number" handleChange={handleChange} name="amount" placeholder="Amount to stake in ETH" value={formData.amount} /> 
+        <Button onClick={setMax} text="Max" />
+        <Button onClick={getQuote} text="Wrap & Stake" />
       </div>
     </div>
   )

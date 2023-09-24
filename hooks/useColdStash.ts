@@ -6,7 +6,7 @@ import { useAccount, useContractRead, useContractWrite } from "wagmi";
 const isNull = (value: any) => value ==='0x0000000000000000000000000000000000000000';
 
 // use interval with disable option
-const useInterval = (callback: () => void, delay: number | null, disabled?: any) => {
+export const useInterval = (callback: () => void, delay: number | null, disabled?: any) => {
   const savedCallback = useRef<() => void | null>();
 
   useEffect(() => {

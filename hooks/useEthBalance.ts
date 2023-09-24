@@ -11,6 +11,7 @@ export const useEthBalance = () => {
   const balanceInEth = useMemo(() => (Number(balance?.value) / 10 ** 18).toFixed(8), [balance])
 
   return {
+    balance: Number(balance?.value),
     balanceInEth,
   }
 }
