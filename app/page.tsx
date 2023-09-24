@@ -1,6 +1,6 @@
 "use client";
 
-import Form from "@/components/form";
+import Form from "@/components/Form";
 import {
   createWeb3Modal,
   defaultWagmiConfig,
