@@ -1,5 +1,6 @@
 export const COLD_STASH_CONTRACTS = {
-  goerli: '0x1c2a6375d981E25DaEd017A7C66d6C8E50D451C7'
+  goerli: '0x1c2a6375d981E25DaEd017A7C66d6C8E50D451C7',
+  arbi: '0x060f7b972ae0196a82626ce2367b55693d9e656b'
 } as const;
 
 export const getShortenName = (address?: string) => {

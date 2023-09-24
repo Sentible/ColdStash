@@ -1,6 +1,4 @@
-import coldstashabi from "@/abi/coldstashabi";
 import weth from "@/abi/weth";
-import { COLD_STASH_CONTRACTS } from "@/utils";
 import { SWAP_MAP } from "@/utils/config";
 import { useRef, useEffect } from "react";
 import { useContractWrite, useNetwork } from "wagmi";

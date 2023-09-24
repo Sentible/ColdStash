@@ -33,12 +33,12 @@ export const useColdStash = (newColdStash?: string) => {
   const { address } = useAccount();
   const { data, refetch } = useContractRead({
     abi: coldstashabi,
-    address: COLD_STASH_CONTRACTS.goerli,
+    address: COLD_STASH_CONTRACTS.arbi,
     functionName: 'getColdWallet',
     args: [address],
   });
   const { data: writeData,  isLoading, isSuccess, writeAsync } = useContractWrite({
-    address: COLD_STASH_CONTRACTS.goerli,
+    address: COLD_STASH_CONTRACTS.arbi,
     abi: coldstashabi,
     functionName: 'addColdWallet',
     onSettled: () => {
