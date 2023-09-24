@@ -28,4 +28,29 @@ body {
 
 body {
   padding: 2rem;
+  position: relative;
+  height: 100vh;
+}
+
+.svg-container {
+  animation: rotate 2s ease-in-out infinite;
+  width: 90px;
+}
+
+.svg-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+}
+
+@keyframes rotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
 }
